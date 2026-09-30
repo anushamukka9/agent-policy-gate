@@ -1,0 +1,51 @@
+# Sample team policy for the policy gate.
+#
+# Load it with:
+#   from policy_gate import load_policy, set_policy
+#   set_policy(load_policy("examples/policies/team_policy.yaml"))
+#
+# Needs PyYAML: pip install pyyaml
+
+read_file:
+  allowed_prefixes:
+    - /srv/agent/
+    - /tmp/work/
+  blocked_paths:
+    # The denylist wins over the allowlist.
+    - /srv/agent/secrets/
+  required_args:
+    - path
+
+run_shell:
+  allowed_commands: [ls, cat, wc, head, tail, grep, git]
+  blocked_patterns:
+    - '\brm\s+-rf\b'
+    - ';'
+    - '&&'
+    - '\|\|'
+    - '`'
+    - '\$\('
+  allowed_prefixes:
+    - /srv/agent/
+    - /tmp/work/
+  max_command_length: 500
+  required_args:
+    - command
+  rate_limit:
+    max_calls: 20
+    window_seconds: 60
+
+send_email:
+  allowed_recipients:
+    - .*@internal\.example\.com$
+  blocked_recipients:
+    - ^root@internal\.example\.com$
+  required_args: [to, subject]
+  # Every email needs a human to say yes, even an internal one.
+  approval_patterns:
+    - .*
+
+publish_release:
+  allowed: true
+  needs_approval: true
+  required_args: [version]
