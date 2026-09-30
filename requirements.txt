@@ -1,1 +1,6 @@
-# No third-party dependencies. Standard library only (Python 3.10+).
+# The gate itself has no required third-party dependencies.
+# Standard library only (Python 3.10+).
+#
+# Optional: PyYAML, needed only if you load .yaml/.yml policy files
+# with load_policy(). JSON policy files need nothing.
+# Install it with: pip install pyyaml
