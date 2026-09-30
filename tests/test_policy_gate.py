@@ -1,4 +1,4 @@
-"""Tests for policy_gate.py — the gate must fail closed, never throw,
+"""Tests for policy_gate.py: the gate must fail closed, never throw,
 and log every decision with a reason."""
 
 import json
